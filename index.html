@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>lazy-load</title>
+</head>
+<style type="text/css">
+	#lazy{
+		width: 1024px;
+		margin: 0 auto;
+	}
+</style>
+<body>
+	<div id="lazy"></div>
+</body>
+<script type="text/javascript" src="./data.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		var lazyId = document.getElementById("lazy");
+		for(var i = 0 ; i<imgSrc.length; i++){
+			var imgElement = document.createElement("img");
+			imgElement.style.display = "block";
+			imgElement.style.width = "1024px";
+			imgElement.style.height = "300px";
+			imgElement.style.marginBottom = "20px";
+			imgElement.dataset.src = imgSrc[i];
+			imgElement.alt = "加载中...";
+			// imgElement.src = imgSrc[i];
+			lazyId.appendChild(imgElement);
+			console.log("执行图片插入...")
+		}
+		checkLoadImg("执行--onload");
+	}
+	window.onscroll = function(){checkLoadImg("执行--onscroll");}
+	function checkLoadImg(argu){
+		console.log(argu);
+		var allImgEle = document.getElementsByTagName("img");
+		var scrollTop = document.documentElement.scrollTop;
+		var clientHeight = document.documentElement.clientHeight;
+		console.log(allImgEle)
+		for(var i = 0; i< allImgEle.length; i++){
+			var imgOffsetTop = allImgEle[i].offsetTop;
+			if(imgOffsetTop - scrollTop < clientHeight + 100){
+				allImgEle[i].alt = "图片"+i;
+				allImgEle[i].src = allImgEle[i].dataset.src;
+			}
+		}
+	}
+</script>
+</html>
